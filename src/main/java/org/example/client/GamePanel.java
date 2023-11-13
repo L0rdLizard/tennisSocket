@@ -1,7 +1,6 @@
 package org.example.client;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +11,9 @@ import org.example.client.inputs.MouseInputs;
 import static org.example.client.Constants.*;
 
 public class GamePanel extends JPanel {
+    public Game game;
     private MouseInputs mouseInputs;
+    private KeyboardInputs keyboardInputs;
 //    private float xDelta = 100, yDelta = 100;
 //    private float xDir = 1f, yDir = 1f;
     private Color color = new Color(150, 20, 90);
@@ -21,16 +22,23 @@ public class GamePanel extends JPanel {
     private int WWidth = WindowWidth;
     private int WHeight = WindowHeight;
 
-    // Temp
     private ArrayList<MyRect> ovals = new ArrayList<>();
 
-    public GamePanel() {
+    public GamePanel(Game game) {
 
         random = new Random();
+
         mouseInputs = new MouseInputs(this);
-        addKeyListener(new KeyboardInputs(this));
+        keyboardInputs = new KeyboardInputs(this);
+
+//        addKeyListener(new KeyboardInputs(this));
+//        addMouseListener(mouseInputs);
+//        addMouseMotionListener(mouseInputs);
+
+        addKeyListener(keyboardInputs);
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
+
         spawnRect(150, 150);
     }
 
@@ -54,7 +62,6 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Temp Rects
         for (MyRect rect : ovals) {
             rect.updateRect();
             rect.draw(g);
@@ -62,10 +69,35 @@ public class GamePanel extends JPanel {
 
 //        updateRectangle();
 
+        drawField(g);
+
         g.setColor(color);
 //        g.fillRect((int) xDelta, (int) yDelta, 200, 50);
-
     }
+
+    public void drawField(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        float[] dash = { 10.0f };
+        g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
+        g2d.setColor(Color.BLACK);
+        g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
+    }
+    public Game getGame(){
+        return game;
+    }
+
+//    public void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//
+//        for (MyRect rect : ovals) {
+//            rect.updateRect();
+//            rect.draw(g);
+//        }
+//
+//
+//        g.setColor(color);
+//    }
 
 //    private void updateRectangle() {
 //        xDelta += xDir;
@@ -89,6 +121,7 @@ public class GamePanel extends JPanel {
 //        return new Color(r, g, b);
 //    }
 
+
     // Temp
     public class MyRect {
         int x, y, w, h;
@@ -108,11 +141,11 @@ public class GamePanel extends JPanel {
             this.x += xDir;
             this.y += yDir;
 
-            if ((x + w) > WWidth - 10 || x < 0) {
+            if ((x + w) > WWidth - 15 || x < 0) {
                 xDir *= -1;
                 color = newColor();
             }
-            if ((y + h) > WHeight - 30 || y < 0) {
+            if ((y + h) > WHeight - 35 || y < 0) {
                 yDir *= -1;
                 color = newColor();
             }
