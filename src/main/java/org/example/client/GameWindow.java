@@ -1,11 +1,12 @@
 package org.example.client;
 
 import javax.swing.JFrame;
+import static org.example.client.Constants.*;
 
 public class GameWindow {
     private JFrame jframe;
-    private int width = 800;
-    private int height = 600;
+    private int width = WindowWidth;
+    private int height = WindowHeight;
 
     public GameWindow(GamePanel gamePanel) {
 

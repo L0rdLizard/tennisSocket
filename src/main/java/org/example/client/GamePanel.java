@@ -13,8 +13,8 @@ import static org.example.client.Constants.*;
 
 public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;
-    private float xDelta = 100, yDelta = 100;
-    private float xDir = 1f, yDir = 1f;
+//    private float xDelta = 100, yDelta = 100;
+//    private float xDir = 1f, yDir = 1f;
     private Color color = new Color(150, 20, 90);
     private Random random;
 
@@ -22,7 +22,7 @@ public class GamePanel extends JPanel {
     private int WHeight = WindowHeight;
 
     // Temp
-    private ArrayList<MyRect> rects = new ArrayList<>();
+    private ArrayList<MyRect> ovals = new ArrayList<>();
 
     public GamePanel() {
 
@@ -34,28 +34,28 @@ public class GamePanel extends JPanel {
         spawnRect(150, 150);
     }
 
-    public void changeXDelta(int value) {
-        this.xDelta += value;
-    }
+//    public void changeXDelta(int value) {
+//        this.xDelta += value;
+//    }
+//
+//    public void changeYDelta(int value) {
+//        this.yDelta += value;
+//    }
 
-    public void changeYDelta(int value) {
-        this.yDelta += value;
-    }
-
-    public void setRectPos(int x, int y) {
-        this.xDelta = x;
-        this.yDelta = y;
-    }
+//    public void setRectPos(int x, int y) {
+//        this.xDelta = x;
+//        this.yDelta = y;
+//    }
 
     public void spawnRect(int x, int y) {
-        rects.add(new MyRect(x, y));
+        ovals.add(new MyRect(x, y));
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         // Temp Rects
-        for (MyRect rect : rects) {
+        for (MyRect rect : ovals) {
             rect.updateRect();
             rect.draw(g);
         }
@@ -81,13 +81,13 @@ public class GamePanel extends JPanel {
 //        }
 //    }
 
-    private Color getRndColor() {
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-
-        return new Color(r, g, b);
-    }
+//    private Color getRndColor() {
+//        int r = random.nextInt(255);
+//        int g = random.nextInt(255);
+//        int b = random.nextInt(255);
+//
+//        return new Color(r, g, b);
+//    }
 
     // Temp
     public class MyRect {
@@ -99,7 +99,7 @@ public class GamePanel extends JPanel {
             this.x = x;
             this.y = y;
 //            w = random.nextInt(50);
-            w = 50;
+            w = 30;
             h = w;
             color = newColor();
         }
@@ -108,11 +108,11 @@ public class GamePanel extends JPanel {
             this.x += xDir;
             this.y += yDir;
 
-            if ((x + w) > 400 || x < 0) {
+            if ((x + w) > WWidth - 10 || x < 0) {
                 xDir *= -1;
                 color = newColor();
             }
-            if ((y + h) > 375 || y < 0) {
+            if ((y + h) > WHeight - 30 || y < 0) {
                 yDir *= -1;
                 color = newColor();
             }
@@ -124,7 +124,8 @@ public class GamePanel extends JPanel {
 
         public void draw(Graphics g) {
             g.setColor(color);
-            g.fillRect(x, y, w, h);
+//            g.fillRect(x, y, w, h);
+            g.fillOval(x, y, w, h);
         }
 
     }
