@@ -125,7 +125,7 @@ public class GamePanel extends JPanel {
     // Temp
     public class MyRect {
         int x, y, w, h;
-        int xDir = 4, yDir = 1;
+        int xDir = 4, yDir = 2;
         Color color;
 
         public MyRect(int x, int y) {
