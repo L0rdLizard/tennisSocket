@@ -15,16 +15,10 @@ public class GamePanel extends JPanel {
     public Game game;
     private MouseInputs mouseInputs;
     private KeyboardInputs keyboardInputs;
-//    private float xDelta = 100, yDelta = 100;
-//    private float xDir = 1f, yDir = 1f;
     private Color color = new Color(150, 20, 90);
-//    private Random random;
-//
-//    private int WWidth = WindowWidth;
-//    private int WHeight = WindowHeight;
 
     private ArrayList<Ball> balls = new ArrayList<>();
-//    private ArrayList<Racket> rackets = new ArrayList<>();
+
     private Racket racketLeft;
     private Racket racketRight;
 
@@ -48,9 +42,6 @@ public class GamePanel extends JPanel {
         this.racketLeft.setRacketPos(y);
     }
 
-//    private void spawnRacket(int x, int y) {
-//        rackets.add(new Racket(x, y));
-//    }
 
     public void spawnBall(int x, int y) {
         balls.add(new Ball(x, y));
@@ -83,7 +74,6 @@ public class GamePanel extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
     }
-
 
     public Game getGame(){
         return game;

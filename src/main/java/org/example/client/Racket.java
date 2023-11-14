@@ -8,10 +8,8 @@ import static org.example.client.Constants.WindowHeight;
 import static org.example.client.Constants.WindowWidth;
 
 public class Racket {
-
     int x, y, w, h;
     Color color;
-
 
     public Racket(int x, int y) {
         this.x = x;
@@ -28,7 +26,6 @@ public class Racket {
     public void setRacketPos(int y) {
         this.y = y - (h / 2);
     }
-
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);

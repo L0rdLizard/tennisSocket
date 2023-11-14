@@ -19,9 +19,6 @@ public class Game implements Runnable {
         gameThread.start();
     }
 
-//    private void updates() {
-//        GamePanel.
-//    }
 
     @Override
     public void run() {
