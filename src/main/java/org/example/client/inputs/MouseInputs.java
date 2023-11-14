@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import org.example.client.GamePanel;
+import org.example.client.Racket;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
@@ -22,14 +23,13 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-//		gamePanel.setRectPos(e.getX(), e.getY());
-
+		gamePanel.setRacketPos(e.getY());
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 //		System.out.println("Mouse clicked!");
-        gamePanel.spawnRect(e.getX(),e.getY());
+//        gamePanel.spawnBall(e.getX(),e.getY());
 
     }
 

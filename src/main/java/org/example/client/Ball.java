@@ -14,7 +14,6 @@ public class Ball {
         this.x = x;
         this.y = y;
         random = new Random();
-//            w = random.nextInt(50);
         w = 30;
         h = w;
         color = newColor();
@@ -28,7 +27,7 @@ public class Ball {
             xDir *= -1;
             color = newColor();
         }
-        if ((y + h) > WindowHeight - 35 || y < 0) {
+        if ((y + h) > WindowHeight - 45 || y < 0) {
             yDir *= -1;
             color = newColor();
         }
@@ -40,7 +39,6 @@ public class Ball {
 
     public void draw(Graphics g) {
         g.setColor(color);
-//            g.fillRect(x, y, w, h);
         g.fillOval(x, y, w, h);
     }
 
