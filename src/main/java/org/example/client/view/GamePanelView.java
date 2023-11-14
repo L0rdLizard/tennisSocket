@@ -1,27 +1,20 @@
-package org.example.client;
+package org.example.client.view;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-
-import javax.swing.JPanel;
-
+import org.example.client.Ball;
 import org.example.client.inputs.KeyboardInputs;
 import org.example.client.inputs.MouseInputs;
 
-import static org.example.client.Constants.*;
+import javax.swing.*;
+import java.awt.*;
 
-public class GamePanel extends JPanel {
+public class GamePanelView extends JPanel {
+    GameView gameView;
     private MouseInputs mouseInputs;
     private KeyboardInputs keyboardInputs;
     private Color color = new Color(150, 20, 90);
 
-    private ArrayList<Ball> balls = new ArrayList<>();
-
-    private Racket racketLeft;
-    private Racket racketRight;
-
-    public GamePanel() {
+    public GamePanelView(GameView gameView) {
+        this.gameView = gameView;
         mouseInputs = new MouseInputs(this);
         keyboardInputs = new KeyboardInputs(this);
 
@@ -29,33 +22,20 @@ public class GamePanel extends JPanel {
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
 
-        spawnBall(250, 80);
-//        spawnRacket(30, 150);
-        racketLeft = new Racket(30, 150);
-        racketRight = new Racket(754, 150);
-    }
-
-    public void setRacketPos(int y) {
-        this.racketLeft.setRacketPos(y);
-    }
-
-
-    public void spawnBall(int x, int y) {
-        balls.add(new Ball(x, y));
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (Ball ball : balls) {
+        for (Ball ball : gameView.getGameModel().getTennisCourt().getBalls()) {
             ball.updateRect();
             ball.draw(g);
         }
 
-        racketLeft.updateRacket();
+//        gameView.getGameModel().getTennisCourt().getRacketLeft().updateRacket();
         racketLeft.draw(g);
 
-        racketRight.updateRacket();
+//        gameView.getGameModel().getTennisCourt().getRacketRight().updateRacket();
         racketRight.draw(g);
 
         drawField(g);

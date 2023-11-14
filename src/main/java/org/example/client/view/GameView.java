@@ -1,17 +1,21 @@
-package org.example.client;
+package org.example.client.view;
 
-public class Game implements Runnable {
+import org.example.client.GamePanel;
+import org.example.client.GameWindow;
+import org.example.client.model.GameModel;
 
-    private GameWindow gameWindow;
-    private GamePanel gamePanel;
+public class GameView implements Runnable {
+    GameModel gameModel;
     private Thread gameThread;
+    private GameWindow gameWindow;
+    private GamePanelView gamePanel;
     private final int FPS_SET = 120;
 
-    public Game() {
-        gamePanel = new GamePanel();
+    public GameView(GameModel gameModel) {
+        this.gameModel = gameModel;
+        gamePanel = new GamePanelView(this);
         gameWindow = new GameWindow(gamePanel);
         gamePanel.requestFocus();
-        startGameLoop();
     }
 
     private void startGameLoop() {
@@ -52,4 +56,7 @@ public class Game implements Runnable {
         return gameWindow;
     }
 
+    public GameModel getGameModel(){
+        return gameModel;
+    }
 }
