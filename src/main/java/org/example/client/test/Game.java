@@ -1,4 +1,4 @@
-package org.example.client;
+package org.example.client.test;
 
 public class Game implements Runnable {
 

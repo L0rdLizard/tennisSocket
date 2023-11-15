@@ -1,11 +1,6 @@
-package org.example.client;
+package org.example.client.test;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.util.Random;
-
-import static org.example.client.Constants.WindowHeight;
-import static org.example.client.Constants.WindowWidth;
 
 public class Racket {
     int x, y, w, h;

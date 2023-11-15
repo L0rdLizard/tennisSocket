@@ -1,10 +1,13 @@
-package org.example.client;
+package org.example.client.view;
 
-import javax.swing.JFrame;
+import org.example.client.test.GamePanel;
+
+import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
-import static org.example.client.Constants.*;
+import static org.example.client.test.Constants.WindowHeight;
+import static org.example.client.test.Constants.WindowWidth;
 
 public class GameWindow {
     private JFrame jframe;
@@ -22,7 +25,7 @@ public class GameWindow {
 //        jframe.setVisible(true);
 //    }
 
-    public GameWindow(GamePanel gamePanel){
+    public GameWindow(GamePanelView gamePanel){
         jframe = new JFrame();
         jframe.setDefaultCloseOperation(jframe.EXIT_ON_CLOSE);
         jframe.add(gamePanel);

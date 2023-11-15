@@ -1,14 +1,14 @@
-package org.example.client.inputs;
+package org.example.client.test.inputs;
+
+import org.example.client.test.GamePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import org.example.client.view.GamePanelView;
-
 public class KeyboardInputs implements KeyListener {
-    private GamePanelView gamePanel;
+    private GamePanel gamePanel;
 
-    public KeyboardInputs(GamePanelView gamePanel) {
+    public KeyboardInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 

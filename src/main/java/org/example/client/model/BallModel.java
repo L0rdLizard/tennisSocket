@@ -1,16 +1,16 @@
-package org.example.client;
+package org.example.client.model;
 
 import java.awt.*;
 import java.util.Random;
-import static org.example.client.Constants.*;
+import static org.example.client.test.Constants.*;
 
-public class Ball {
-    int x, y, w, h;
-    int xDir = 4, yDir = 2;
-    Color color;
+public class BallModel {
+    private int x, y, w, h;
+    private int xDir = 4, yDir = 2;
+    private Color color;
     private Random random;
 
-    public Ball(int x, int y) {
+    public BallModel(int x, int y) {
         this.x = x;
         this.y = y;
         random = new Random();
@@ -19,7 +19,7 @@ public class Ball {
         color = newColor();
     }
 
-    public void updateRect() {
+    public void updateBall() {
         this.x += xDir;
         this.y += yDir;
 
@@ -37,9 +37,23 @@ public class Ball {
         return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
     }
 
-    public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillOval(x, y, w, h);
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public int getW(){
+        return w;
+    }
+
+    public int getH(){
+        return h;
+    }
+    public Color getColor(){
+        return color;
     }
 
 }

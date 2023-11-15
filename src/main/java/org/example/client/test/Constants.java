@@ -1,4 +1,4 @@
-package org.example.client;
+package org.example.client.test;
 
 public class Constants {
     public static final int WindowWidth = 800;

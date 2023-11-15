@@ -1,15 +1,12 @@
-package org.example.client;
+package org.example.client.test;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.JPanel;
 
-import org.example.client.inputs.KeyboardInputs;
-import org.example.client.inputs.MouseInputs;
-
-import static org.example.client.Constants.*;
+import org.example.client.test.inputs.KeyboardInputs;
+import org.example.client.test.inputs.MouseInputs;
 
 public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;

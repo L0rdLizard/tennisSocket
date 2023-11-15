@@ -1,17 +1,16 @@
-package org.example.client.inputs;
+package org.example.client.test.inputs;
+
+import org.example.client.test.GamePanel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import org.example.client.test.GamePanel;
-import org.example.client.view.GamePanelView;
-
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
-    private GamePanelView gamePanel;
+    private GamePanel gamePanel;
 
-    public MouseInputs(GamePanelView gamePanel) {
+    public MouseInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
@@ -23,8 +22,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-//		gamePanel.setRacketPos(e.getY());
-        gamePanel.getGameView().getGameModel().getTennisCourt().setRacketPos(e.getY());
+		gamePanel.setRacketPos(e.getY());
     }
 
     @Override

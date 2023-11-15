@@ -1,8 +1,10 @@
 package org.example.client.view;
 
-import org.example.client.Ball;
 import org.example.client.inputs.KeyboardInputs;
 import org.example.client.inputs.MouseInputs;
+import org.example.client.model.BallModel;
+import org.example.client.model.RacketModel;
+import org.example.client.test.Racket;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,17 +28,22 @@ public class GamePanelView extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        RacketModel racketLeft = gameView.getGameModel().getTennisCourt().getRacketLeft();
+        RacketModel racketRight = gameView.getGameModel().getTennisCourt().getRacketRight();
+//        racketLeft = new Racket(30, 150);
+//        racketRight = new Racket(754, 150);
 
-        for (Ball ball : gameView.getGameModel().getTennisCourt().getBalls()) {
-            ball.updateRect();
-            ball.draw(g);
+        for (BallModel ball : gameView.getGameModel().getTennisCourt().getBalls()) {
+//            ball.updateRect();
+//            ball.draw(g, gameView.getGameModel().getTennisCourt().getBalls().);
+            gameView.getTennisCourtView().drawBall(g, ball.getColor(), ball.getX(), ball.getY(), ball.getW(), ball.getH());
         }
 
 //        gameView.getGameModel().getTennisCourt().getRacketLeft().updateRacket();
-        racketLeft.draw(g);
+        gameView.getTennisCourtView().drawRacket(g, racketLeft.getColor(), racketLeft.getX(), racketLeft.getY(), racketLeft.getW(), racketLeft.getH());
 
 //        gameView.getGameModel().getTennisCourt().getRacketRight().updateRacket();
-        racketRight.draw(g);
+        gameView.getTennisCourtView().drawRacket(g, racketRight.getColor(), racketRight.getX(), racketRight.getY(), racketRight.getW(), racketRight.getH());
 
         drawField(g);
 
@@ -52,4 +59,7 @@ public class GamePanelView extends JPanel {
         g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
     }
 
+    public GameView getGameView() {
+        return gameView;
+    }
 }
