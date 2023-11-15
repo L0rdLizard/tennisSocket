@@ -9,7 +9,6 @@ public class GameView implements Runnable {
     private TennisCourtView tennisCourtView;
     private GameWindow gameWindow;
     private GamePanelView gamePanel;
-//    private final int FPS_SET = 120;
 
     public GameView(GameModel gameModel) {
         this.gameModel = gameModel;
@@ -28,7 +27,6 @@ public class GameView implements Runnable {
     @Override
     public void run() {
         while (true) {
-//            if (game.getShouldRepaint())
             gamePanel.repaint();
         }
 

@@ -1,7 +1,5 @@
 package org.example.client.model;
 
-import org.example.client.test.Racket;
-
 import java.util.ArrayList;
 
 public class TennisCourtModel {
@@ -13,10 +11,6 @@ public class TennisCourtModel {
 
         racketLeft = new RacketModel(30, 150);
         racketRight = new RacketModel(754, 150);
-    }
-
-    public void update(){
-
     }
 
     public void setRacketPos(int y) {

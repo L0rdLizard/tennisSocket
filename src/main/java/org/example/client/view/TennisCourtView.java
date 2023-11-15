@@ -22,15 +22,4 @@ public class TennisCourtView {
         g2d.drawLine(x, y, x, y + h);
     }
 
-//    public void drawRacketLeft(Graphics g, Color color, int x, int y, int w, int h){
-//        g.setColor(Color.BLACK);
-//
-//        Graphics2D g2d = (Graphics2D) g;
-//        g2d.setStroke(new BasicStroke(w));
-//        g2d.drawLine(x, y, x, y + h);
-//    }
-//
-//    public void drawRacketRight(){
-//
-//    }
 }

@@ -4,7 +4,6 @@ import org.example.client.inputs.KeyboardInputs;
 import org.example.client.inputs.MouseInputs;
 import org.example.client.model.BallModel;
 import org.example.client.model.RacketModel;
-import org.example.client.test.Racket;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,19 +29,13 @@ public class GamePanelView extends JPanel {
         super.paintComponent(g);
         RacketModel racketLeft = gameView.getGameModel().getTennisCourt().getRacketLeft();
         RacketModel racketRight = gameView.getGameModel().getTennisCourt().getRacketRight();
-//        racketLeft = new Racket(30, 150);
-//        racketRight = new Racket(754, 150);
 
         for (BallModel ball : gameView.getGameModel().getTennisCourt().getBalls()) {
-//            ball.updateRect();
-//            ball.draw(g, gameView.getGameModel().getTennisCourt().getBalls().);
             gameView.getTennisCourtView().drawBall(g, ball.getColor(), ball.getX(), ball.getY(), ball.getW(), ball.getH());
         }
 
-//        gameView.getGameModel().getTennisCourt().getRacketLeft().updateRacket();
         gameView.getTennisCourtView().drawRacket(g, racketLeft.getColor(), racketLeft.getX(), racketLeft.getY(), racketLeft.getW(), racketLeft.getH());
 
-//        gameView.getGameModel().getTennisCourt().getRacketRight().updateRacket();
         gameView.getTennisCourtView().drawRacket(g, racketRight.getColor(), racketRight.getX(), racketRight.getY(), racketRight.getW(), racketRight.getH());
 
         drawField(g);

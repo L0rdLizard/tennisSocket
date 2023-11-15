@@ -14,10 +14,6 @@ public class RacketModel {
         this.h = 90;
     }
 
-    public void updateRacket() {
-
-    }
-
     public void setRacketPos(int y) {
         this.y = y - (h / 2);
     }
