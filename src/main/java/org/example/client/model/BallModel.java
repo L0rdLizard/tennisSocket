@@ -5,12 +5,14 @@ import java.util.Random;
 import static org.example.client.test.Constants.*;
 
 public class BallModel {
+    private TennisCourtModel tennisCourtModel;
     private int x, y, w, h;
-    private int xDir = 4, yDir = 2;
+    private int xDir = 2, yDir = 1;
     private Color color;
     private Random random;
 
-    public BallModel(int x, int y) {
+    public BallModel(TennisCourtModel tennisCourtModel, int x, int y) {
+        this.tennisCourtModel = tennisCourtModel;
         this.x = x;
         this.y = y;
         random = new Random();
@@ -23,6 +25,12 @@ public class BallModel {
         this.x += xDir;
         this.y += yDir;
 
+        if ((x+w) < tennisCourtModel.getRacketLeft().getX() &&
+                (y + h) < (tennisCourtModel.getRacketLeft().getY() - tennisCourtModel.getRacketLeft().getH()) &&
+                        (y + h) > tennisCourtModel.getRacketLeft().getY() + tennisCourtModel.getRacketLeft().getH()){
+            xDir *= -1;
+            color = newColor();
+        }
         if ((x + w) > WindowWidth - 15 || x < 0) {
             xDir *= -1;
             color = newColor();
@@ -31,6 +39,7 @@ public class BallModel {
             yDir *= -1;
             color = newColor();
         }
+
     }
 
     private Color newColor() {

@@ -34,9 +34,9 @@ public class GamePanelView extends JPanel {
             gameView.getTennisCourtView().drawBall(g, ball.getColor(), ball.getX(), ball.getY(), ball.getW(), ball.getH());
         }
 
-        gameView.getTennisCourtView().drawRacket(g, racketLeft.getColor(), racketLeft.getX(), racketLeft.getY(), racketLeft.getW(), racketLeft.getH());
+        gameView.getTennisCourtView().drawRacket(g, racketLeft.getX(), racketLeft.getY(), racketLeft.getW(), racketLeft.getH());
 
-        gameView.getTennisCourtView().drawRacket(g, racketRight.getColor(), racketRight.getX(), racketRight.getY(), racketRight.getW(), racketRight.getH());
+        gameView.getTennisCourtView().drawRacket(g, racketRight.getX(), racketRight.getY(), racketRight.getW(), racketRight.getH());
 
         drawField(g);
 

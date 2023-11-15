@@ -19,7 +19,7 @@ public class TennisCourtModel {
 
 
     public void spawnBall(int x, int y) {
-        balls.add(new BallModel(x, y));
+        balls.add(new BallModel(this, x, y));
     }
 
     public ArrayList<BallModel> getBalls(){
