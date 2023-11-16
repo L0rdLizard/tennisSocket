@@ -9,12 +9,13 @@ public class TennisCourtModel {
     public TennisCourtModel(){
         spawnBall(250, 80);
 
-        racketLeft = new RacketModel(30, 150);
-        racketRight = new RacketModel(754, 150);
+        racketLeft = new RacketModel(50, 150);
+        racketRight = new RacketModel(734, 150);
     }
 
     public void setRacketPos(int y) {
         this.racketLeft.setRacketPos(y);
+        this.racketRight.setRacketPos(y);
     }
 
 
