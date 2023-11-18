@@ -24,8 +24,13 @@ public class GameModel implements Runnable{
 
     private void updates(){
         if (playing) {
+//            System.out.println("update physics");
             for (BallModel ball : tennisCourtModel.getBalls()) {
                 ball.updateBall();
+//                if (ball.isCollider()){
+//                    stopT();
+//                    ball.resetCollider();
+//                }
             }
         }
     }
@@ -57,6 +62,7 @@ public class GameModel implements Runnable{
         double deltaF = 0;
 
         while (true) {
+//            updates();
             long currentTime = System.nanoTime();
 
             deltaU += (currentTime - previousTime) / timePerUpdate;
@@ -94,6 +100,7 @@ public class GameModel implements Runnable{
         } else{
             playing = true;
         }
+        System.out.println(playing);
     }
 
     public boolean isPlaying(){

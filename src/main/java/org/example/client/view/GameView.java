@@ -26,10 +26,11 @@ public class GameView implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            gamePanel.repaint();
+        if (gameModel.isPlaying()) {
+            while (true) {
+                gamePanel.repaint();
+            }
         }
-
     }
 
     public GameWindow getGameWindow(){

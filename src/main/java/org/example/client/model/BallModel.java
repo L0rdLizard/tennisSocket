@@ -10,6 +10,7 @@ public class BallModel {
     private int xDir = 2, yDir = 1;
     private Color color;
     private Random random;
+    private boolean collider = false;
 
     public BallModel(TennisCourtModel tennisCourtModel, int x, int y) {
         this.tennisCourtModel = tennisCourtModel;
@@ -22,6 +23,7 @@ public class BallModel {
     }
 
     public void updateBall() {
+//        if (collider) {return;}
         this.x += xDir;
         this.y += yDir;
 
@@ -34,8 +36,16 @@ public class BallModel {
 //                            System.out.println("Left");
                             xDir *= -1;
                             color = newColor();
+
+                            try {
+                                tennisCourtModel.getGameModel().changePlaying();
+                                Thread.sleep(2000);
+                                tennisCourtModel.getGameModel().changePlaying();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
 //                            stop();
-                            tennisCourtModel.getGameModel().stopT();
+//                            tennisCourtModel.getGameModel().stopT();
                         }
 
         if ((x+w) > tennisCourtModel.getRacketRight().getX())
@@ -51,6 +61,7 @@ public class BallModel {
         if ((x + w) > WindowWidth - 15 || x < 0) {
             xDir *= -1;
             color = newColor();
+//            collider = true;
         }
         if ((y + h) > WindowHeight - 45 || y < 0) {
             yDir *= -1;
@@ -80,6 +91,12 @@ public class BallModel {
     }
     public Color getColor(){
         return color;
+    }
+    public boolean isCollider(){
+        return collider;
+    }
+    public void resetCollider(){
+        collider = false;
     }
     public void stopGame(){
         xDir = 0;
