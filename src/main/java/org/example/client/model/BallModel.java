@@ -32,7 +32,7 @@ public class BallModel {
 //            color = newColor();
 //        }
         if ((x+w) < tennisCourtModel.getRacketLeft().getX() + w)
-            if ((y + h) < (tennisCourtModel.getRacketLeft().getY() + tennisCourtModel.getRacketLeft().getH()))
+            if ((y + h) <= (tennisCourtModel.getRacketLeft().getY() + tennisCourtModel.getRacketLeft().getH() + 15))
                 if ((y + h) > (tennisCourtModel.getRacketLeft().getY()))
                     if (xDir < 0)
                         if ((x+w) - tennisCourtModel.getRacketLeft().getX() >= xDir){
@@ -42,7 +42,7 @@ public class BallModel {
                         }
 
         if ((x+w) > tennisCourtModel.getRacketRight().getX())
-            if ((y + h) < (tennisCourtModel.getRacketRight().getY() + tennisCourtModel.getRacketRight().getH()))
+            if ((y + h) <= (tennisCourtModel.getRacketRight().getY() + tennisCourtModel.getRacketRight().getH() + 15))
                 if ((y + h) > (tennisCourtModel.getRacketRight().getY()))
                     if (xDir > 0)
                         if ((x+w) - tennisCourtModel.getRacketRight().getX() <= xDir){

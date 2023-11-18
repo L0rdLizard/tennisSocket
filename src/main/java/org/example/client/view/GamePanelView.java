@@ -44,11 +44,12 @@ public class GamePanelView extends JPanel {
     }
 
     public void drawField(Graphics g){
+        setBackground(Color.DARK_GRAY);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         float[] dash = { 10.0f };
         g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.GRAY);
         g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
     }
 
