@@ -4,9 +4,13 @@ import java.util.ArrayList;
 
 public class TennisCourtModel {
     private ArrayList<BallModel> balls = new ArrayList<>();
+    private GameModel gameModel;
     private RacketModel racketLeft;
     private RacketModel racketRight;
-    public TennisCourtModel(){
+    private int scoreLeft = 0;
+    private int scoreRight = 0;
+    public TennisCourtModel(GameModel gameModel){
+        this.gameModel = gameModel;
         spawnBall(250, 80);
 
         racketLeft = new RacketModel(50, 150);
@@ -34,4 +38,5 @@ public class TennisCourtModel {
     public RacketModel getRacketRight(){
         return racketRight;
     }
+    public GameModel getGameModel() {return gameModel;}
 }

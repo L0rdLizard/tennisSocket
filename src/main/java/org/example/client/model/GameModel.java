@@ -5,6 +5,7 @@ public class GameModel implements Runnable{
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
+    private boolean playing = true;
 
     public GameModel() {
         initClasses();
@@ -12,19 +13,33 @@ public class GameModel implements Runnable{
     }
 
     private void initClasses() {
-        tennisCourtModel = new TennisCourtModel();
+        tennisCourtModel = new TennisCourtModel(this);
     }
 
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
+//        this.start();
     }
 
     private void updates(){
-        for (BallModel ball : tennisCourtModel.getBalls()){
-            ball.updateBall();
+        if (playing) {
+            for (BallModel ball : tennisCourtModel.getBalls()) {
+                ball.updateBall();
+            }
         }
     }
+
+    public void stopT(){
+        try {
+            changePlaying();
+            Thread.sleep(2000);
+            changePlaying();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     @Override
@@ -55,11 +70,9 @@ public class GameModel implements Runnable{
             }
 
             if (deltaF >= 1) {
-//                shouldRepaint = false;
                 frames++;
                 deltaF--;
             }
-//            else shouldRepaint = true;
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
@@ -73,5 +86,17 @@ public class GameModel implements Runnable{
 
     public TennisCourtModel getTennisCourt(){
         return tennisCourtModel;
+    }
+
+    public void changePlaying(){
+        if (playing){
+            playing = false;
+        } else{
+            playing = true;
+        }
+    }
+
+    public boolean isPlaying(){
+        return playing;
     }
 }
