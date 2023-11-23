@@ -40,6 +40,8 @@ public class GamePanelView extends JPanel {
 
         drawField(g);
 
+        drawScore(g);
+
         g.setColor(color);
     }
 
@@ -51,6 +53,13 @@ public class GamePanelView extends JPanel {
         g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
         g2d.setColor(Color.GRAY);
         g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
+    }
+
+    public void drawScore(Graphics g){
+        g.setColor(Color.black);
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+        g.drawString(" " + gameView.getGameModel().getTennisCourt().getScoreLeft(), 320, 40);
+        g.drawString(" " + gameView.getGameModel().getTennisCourt().getScoreRight(), 420, 40);
     }
 
     public GameView getGameView() {

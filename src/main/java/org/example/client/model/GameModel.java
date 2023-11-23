@@ -6,6 +6,9 @@ public class GameModel implements Runnable{
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
     private boolean playing = true;
+    private long lastCheck = 0;
+    private long previousTime = 0;
+
 
     public GameModel() {
         initClasses();
@@ -24,39 +27,35 @@ public class GameModel implements Runnable{
 
     private void updates(){
         if (playing) {
-//            System.out.println("update physics");
             for (BallModel ball : tennisCourtModel.getBalls()) {
                 ball.updateBall();
-//                if (ball.isCollider()){
-//                    stopT();
-//                    ball.resetCollider();
-//                }
             }
         }
+        tennisCourtModel.update();
     }
 
     public void stopT(){
         try {
             changePlaying();
             Thread.sleep(2000);
+            lastCheck = System.currentTimeMillis();
+            previousTime = System.nanoTime();
             changePlaying();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-
     @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS_SET;
         double timePerUpdate = 1000000000.0 / UPS_SET;
 
-        long previousTime = System.nanoTime();
+        previousTime = System.nanoTime();
 
         int frames = 0;
         int updates = 0;
-        long lastCheck = System.currentTimeMillis();
+        lastCheck = System.currentTimeMillis();
 
         double deltaU = 0;
         double deltaF = 0;

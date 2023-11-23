@@ -9,6 +9,8 @@ public class TennisCourtModel {
     private RacketModel racketRight;
     private int scoreLeft = 0;
     private int scoreRight = 0;
+    private int winSide = 0;
+
     public TennisCourtModel(GameModel gameModel){
         this.gameModel = gameModel;
         spawnBall(250, 80);
@@ -20,6 +22,21 @@ public class TennisCourtModel {
     public void setRacketPos(int y) {
         this.racketLeft.setRacketPos(y);
         this.racketRight.setRacketPos(y);
+    }
+
+    public void update(){
+        if (scoreLeft >= 3){
+            gameOver(1);
+        }
+        if (scoreRight >= 3){
+            gameOver(2);
+        }
+    }
+
+    public void gameOver(int winSide){
+        // 1 - left
+        // 2 - right
+        this.winSide = winSide;
     }
 
 
@@ -39,4 +56,20 @@ public class TennisCourtModel {
         return racketRight;
     }
     public GameModel getGameModel() {return gameModel;}
+
+    public void plusScoreLeft(){
+        scoreLeft++;
+    }
+
+    public void plusScoreRight(){
+        scoreRight++;
+    }
+
+    public int getScoreLeft(){
+        return scoreLeft;
+    }
+
+    public int getScoreRight(){
+        return scoreRight;
+    }
 }

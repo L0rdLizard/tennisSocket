@@ -33,17 +33,8 @@ public class BallModel {
                 if ((y + h) > (tennisCourtModel.getRacketLeft().getY()))
                     if (xDir < 0)
                         if ((x+w) - tennisCourtModel.getRacketLeft().getX() >= xDir){
-//                            System.out.println("Left");
                             xDir *= -1;
                             color = newColor();
-
-                            try {
-                                tennisCourtModel.getGameModel().changePlaying();
-                                Thread.sleep(2000);
-                                tennisCourtModel.getGameModel().changePlaying();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
 //                            stop();
 //                            tennisCourtModel.getGameModel().stopT();
                         }
@@ -53,7 +44,6 @@ public class BallModel {
                 if ((y + h) > (tennisCourtModel.getRacketRight().getY()))
                     if (xDir > 0)
                         if ((x+w) - tennisCourtModel.getRacketRight().getX() <= xDir){
-//                            System.out.println("Right");
                             xDir *= -1;
                             color = newColor();
                         }
@@ -61,6 +51,11 @@ public class BallModel {
         if ((x + w) > WindowWidth - 15 || x < 0) {
             xDir *= -1;
             color = newColor();
+            if (x < 0){
+                tennisCourtModel.plusScoreRight();
+            } else {
+                tennisCourtModel.plusScoreLeft();
+            }
 //            collider = true;
         }
         if ((y + h) > WindowHeight - 45 || y < 0) {
