@@ -24,12 +24,19 @@ public class GameView implements Runnable {
         renderThread.start();
     }
 
+//    @Override
+//    public void run() {
+//        if (gameModel.isPlaying()) {
+//            while (true) {
+//                gamePanel.repaint();
+//            }
+//        }
+//    }
+
     @Override
     public void run() {
-        if (gameModel.isPlaying()) {
-            while (true) {
-                gamePanel.repaint();
-            }
+        while (true) {
+            gamePanel.repaint();
         }
     }
 

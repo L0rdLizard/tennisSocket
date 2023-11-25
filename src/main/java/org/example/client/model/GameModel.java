@@ -5,7 +5,7 @@ public class GameModel implements Runnable{
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    private boolean playing = true;
+    private boolean playing = false;
     private long lastCheck = 0;
     private long previousTime = 0;
 
@@ -36,11 +36,11 @@ public class GameModel implements Runnable{
 
     public void stopT(){
         try {
-            changePlaying();
-            Thread.sleep(2000);
+//            changePlaying();
+            Thread.sleep(1000);
             lastCheck = System.currentTimeMillis();
             previousTime = System.nanoTime();
-            changePlaying();
+//            changePlaying();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
