@@ -1,8 +1,8 @@
 package org.example.client.model;
 
 public class GameModel implements Runnable{
-    TennisCourtModel tennisCourtModel;
-    private Thread gameThread;
+    private TennisCourtModel tennisCourtModel;
+    public Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
     private boolean playing = false;
@@ -44,6 +44,10 @@ public class GameModel implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void gameOver(){
+
     }
 
     @Override
@@ -93,7 +97,17 @@ public class GameModel implements Runnable{
         return tennisCourtModel;
     }
 
-    public void changePlaying(){
+    public void changePlaying(boolean playing){
+//        if (playing){
+//            playing = false;
+//        } else{
+//            playing = true;
+//        }
+        this.playing = playing;
+        System.out.println(playing);
+    }
+
+    public void changePlayingReverse(){
         if (playing){
             playing = false;
         } else{

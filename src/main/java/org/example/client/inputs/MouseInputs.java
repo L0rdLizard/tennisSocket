@@ -31,7 +31,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseClicked(MouseEvent e) {
 //		System.out.println("Mouse clicked!");
 //        gamePanel.spawnBall(e.getX(),e.getY());
-        gamePanel.getGameView().getGameModel().changePlaying();
+        gamePanel.getGameView().getGameModel().changePlayingReverse();
 
     }
 

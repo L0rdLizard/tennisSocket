@@ -41,7 +41,12 @@ public class TennisCourtModel {
     public void gameOver(int winSide){
         // 1 - left
         // 2 - right
+        scoreRight = 0;
+        scoreLeft = 0;
         this.winSide = winSide;
+        if (gameModel.isPlaying()){
+            gameModel.changePlaying(false);
+        }
     }
 
 
