@@ -1,6 +1,5 @@
 package org.example.client.view;
 
-import org.example.client.view.GameWindow;
 import org.example.client.model.GameModel;
 
 public class GameView implements Runnable {
@@ -8,14 +7,14 @@ public class GameView implements Runnable {
     private Thread renderThread;
     private TennisCourtView tennisCourtView;
     private GameWindow gameWindow;
-    private GamePanelView gamePanel;
+    private GamePanelView gamePanelView;
 
     public GameView(GameModel gameModel) {
         this.gameModel = gameModel;
-        gamePanel = new GamePanelView(this);
-        gameWindow = new GameWindow(gamePanel);
+        gamePanelView = new GamePanelView(this);
+        gameWindow = new GameWindow(gamePanelView);
         tennisCourtView = new TennisCourtView(this);
-        gamePanel.requestFocus();
+        gamePanelView.requestFocus();
         startRenderLoop();
     }
 
@@ -36,7 +35,7 @@ public class GameView implements Runnable {
     @Override
     public void run() {
         while (true) {
-            gamePanel.repaint();
+            gamePanelView.repaint();
         }
     }
 
@@ -48,4 +47,7 @@ public class GameView implements Runnable {
         return gameModel;
     }
     public TennisCourtView getTennisCourtView(){return tennisCourtView;}
+    public GamePanelView getGamePanelView() {
+        return gamePanelView;
+    }
 }

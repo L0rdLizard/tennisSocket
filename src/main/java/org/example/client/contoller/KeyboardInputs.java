@@ -1,4 +1,4 @@
-package org.example.client.inputs;
+package org.example.client.contoller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

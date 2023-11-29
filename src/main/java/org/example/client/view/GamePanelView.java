@@ -1,7 +1,7 @@
 package org.example.client.view;
 
-import org.example.client.inputs.KeyboardInputs;
-import org.example.client.inputs.MouseInputs;
+import org.example.client.contoller.KeyboardInputs;
+import org.example.client.contoller.MouseInputs;
 import org.example.client.model.BallModel;
 import org.example.client.model.RacketModel;
 
@@ -10,19 +10,18 @@ import java.awt.*;
 
 public class GamePanelView extends JPanel {
     GameView gameView;
-    private MouseInputs mouseInputs;
-    private KeyboardInputs keyboardInputs;
+//    private MouseInputs mouseInputs;
+//    private KeyboardInputs keyboardInputs;
     private Color color = new Color(150, 20, 90);
 
     public GamePanelView(GameView gameView) {
         this.gameView = gameView;
-        mouseInputs = new MouseInputs(this);
-        keyboardInputs = new KeyboardInputs(this);
-
-        addKeyListener(keyboardInputs);
-        addMouseListener(mouseInputs);
-        addMouseMotionListener(mouseInputs);
-
+//        mouseInputs = new MouseInputs(this);
+//        keyboardInputs = new KeyboardInputs(this);
+//
+//        addKeyListener(keyboardInputs);
+//        addMouseListener(mouseInputs);
+//        addMouseMotionListener(mouseInputs);
     }
 
     public void paintComponent(Graphics g) {

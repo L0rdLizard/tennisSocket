@@ -1,10 +1,9 @@
-package org.example.client.inputs;
+package org.example.client.contoller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import org.example.client.test.GamePanel;
 import org.example.client.view.GamePanelView;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
