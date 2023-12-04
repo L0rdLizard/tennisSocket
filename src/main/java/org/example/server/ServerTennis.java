@@ -94,7 +94,7 @@ public class ServerTennis {
 
                     if (roomNumber.matches("[0-9]+")) {
                         System.out.println("Строка содержит только числа");
-                        Room room = new Room(Integer.parseInt(roomNumber));
+                        Room room = new Room(Integer.parseInt(roomNumber), this);
                         rooms.add(room);
                         k = false;
                     } else {
@@ -117,6 +117,17 @@ public class ServerTennis {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private static class Room extends Thread{
+        int number;
+        Connection leftPlayerConnection;
+        Connection rightPlayerConnection;
+
+        public Room(int number, Connection connection){
+            this.number = number;
+            this.leftPlayerConnection = connection;
         }
     }
 }

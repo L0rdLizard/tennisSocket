@@ -1,9 +1,9 @@
 package org.example.server;
 
-public class Room {
+public class ServerRoom {
     int number;
 
-    public Room(int number){
+    public ServerRoom(int number){
         this.number = number;
     }
 }
