@@ -39,8 +39,8 @@ import java.util.List;
 //}
 
 public class ServerTennis {
-    private static List<Connection> connections = new ArrayList<>();
-    private static List<Room> rooms = new ArrayList<>();
+    private static ArrayList<Connection> connections = new ArrayList<>();
+    private static ArrayList<Room> rooms = new ArrayList<>();
 
 
     public static void main(String[] args) throws IOException {
@@ -59,6 +59,11 @@ public class ServerTennis {
             Connection connection = new Connection(clientSocket);
             connections.add(connection);
             connection.start();
+            connection.out.println("Choose room\nWrite number of room or write 'new'");
+            for (Room room : rooms) {
+                System.out.println(room.number);
+                System.out.println("\n");
+            }
         }
     }
 
@@ -66,7 +71,7 @@ public class ServerTennis {
         private BufferedReader in;
         private PrintWriter out;
         private Socket clientSocket;
-        private String name;
+        private String roomNumber;
 
 
         public Connection(Socket clientSocket) throws IOException {
@@ -78,36 +83,29 @@ public class ServerTennis {
         @Override
         public void run() {
             try {
-                name = in.readLine();
-                for (Connection connection : connections) {
-                    connection.out.println(name + " joined");
+                out.println("Choose room\nWrite number of room to join or write another number to create new room");
+                for (Room room : rooms) {
+                    System.out.println(room.number);
+                    System.out.println("\n");
                 }
+                boolean k = true;
+                while (k) {
+                    roomNumber = in.readLine();
 
-                while (true) {
-                    String message = in.readLine();
-                    if (message.equals("@exit")) {
-                        break;
-
-                    } else if (message.startsWith("@ls ")) {
-                        String username = message.substring(4);
-                        String tempMessage = in.readLine();
-                        for (Connection connection : connections) {
-                            if (connection.name.equals(username)) {
-                                connection.out.println(name + ": " + tempMessage);
-                            }
-                        }
+                    if (roomNumber.matches("[0-9]+")) {
+                        System.out.println("Строка содержит только числа");
+                        Room room = new Room(Integer.parseInt(roomNumber));
+                        rooms.add(room);
+                        k = false;
                     } else {
-                        for (Connection connection : connections) {
-                            if (!(connection.name.equals(name))) {
-                                connection.out.println(name + ": " + message);
-                            }
-                        }
+                        System.out.println("Строка содержит другие символы помимо чисел");
                     }
                 }
 
-                for (Connection connection : connections) {
-                    connection.out.println(name + " left");
+                while (true) {
+
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
