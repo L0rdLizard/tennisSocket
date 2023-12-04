@@ -50,8 +50,10 @@ public class ServerTennis {
         }
 
         int port = Integer.parseInt(args[0]);
+        InetAddress tempAdr = InetAddress.getByName("0.0.0.0");
         ServerSocket serverSocket = new ServerSocket(port);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//        DatagramSocket serverSocket = new DatagramSocket(port, tempAdr);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 //        PrintWriter out = new PrintWriter(System.out, true);
 
         while (true) {
@@ -59,11 +61,11 @@ public class ServerTennis {
             Connection connection = new Connection(clientSocket);
             connections.add(connection);
             connection.start();
-            connection.out.println("Choose room\nWrite number of room or write 'new'");
-            for (Room room : rooms) {
-                System.out.println(room.number);
-                System.out.println("\n");
-            }
+//            connection.out.println("Choose room\nWrite number of room or write 'new'");
+//            for (Room room : rooms) {
+//                System.out.println(room.number);
+//                System.out.println("\n");
+//            }
         }
     }
 
@@ -88,22 +90,27 @@ public class ServerTennis {
                     System.out.println(room.number);
                     System.out.println("\n");
                 }
+
                 boolean k = true;
                 while (k) {
                     roomNumber = in.readLine();
 
                     if (roomNumber.matches("[0-9]+")) {
-                        System.out.println("Строка содержит только числа");
-                        Room room = new Room(Integer.parseInt(roomNumber), this);
-                        rooms.add(room);
-                        k = false;
+                        if (isRoomExist()) {
+                            for (Room room : rooms) {
+                                if (room.getNumber() == Integer.parseInt(roomNumber)){
+                                    room.setRightPlayerConnection(this);
+                                }
+                            }
+                        } else {
+                            System.out.println("Строка содержит только числа");
+                            Room room = new Room(Integer.parseInt(roomNumber), this);
+                            rooms.add(room);
+                            k = false;
+                        }
                     } else {
                         System.out.println("Строка содержит другие символы помимо чисел");
                     }
-                }
-
-                while (true) {
-
                 }
 
             } catch (IOException e) {
@@ -118,16 +125,63 @@ public class ServerTennis {
                 }
             }
         }
+
+        public boolean isRoomExist(){
+            boolean result = false;
+            for (Room room : rooms) {
+                if (room.getNumber() == Integer.parseInt(roomNumber)){
+                    result = true;
+                    return result;
+                }
+            }
+            return result;
+        }
     }
 
     private static class Room extends Thread{
-        int number;
-        Connection leftPlayerConnection;
-        Connection rightPlayerConnection;
+        private int number;
+        private Connection leftPlayerConnection;
+        private Connection rightPlayerConnection;
 
         public Room(int number, Connection connection){
             this.number = number;
             this.leftPlayerConnection = connection;
+        }
+
+        @Override
+        public void run() {
+            byte[] buffer = new byte[1024];
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+            while (true) {
+//                socket.receive(packet);
+//                InetAddress clientAddress = packet.getAddress();
+//                int clientPort = packet.getPort();
+//
+//                if (!clients.contains(clientAddress)) {
+//                    clients.add(clientAddress);
+//                }
+//
+//                String received = new String(packet.getData(), 0, packet.getLength());
+//                int clientY = Integer.parseInt(received);
+//
+//                // TODO: calculate enemy y coordinate and send it to the client
+//                String enemyY = "100";
+//                byte[] sendData = enemyY.getBytes();
+//
+//                for (InetAddress client : clients) {
+//                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, client, clientPort);
+//                    socket.send(sendPacket);
+                }
+            }
+        }
+
+        public int getNumber(){
+            return number;
+        }
+
+        public void setRightPlayerConnection(Connection connection){
+            this.rightPlayerConnection = connection;
         }
     }
 }
