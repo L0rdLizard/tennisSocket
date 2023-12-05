@@ -4,17 +4,15 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 public class ServerUDP {
-
     private static final int PORT = 9876;
-
     private DatagramSocket socket;
+    private boolean running;
     private HashMap<String, String> clientRooms;  // Хранит информацию о том, в какой комнате находится каждый клиент
 
     public ServerUDP() {
@@ -28,14 +26,16 @@ public class ServerUDP {
     }
 
     public void startServer() {
-        try {
-            while (true) {
+            try {
+            while (running) {
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
 
-                String message = new String(packet.getData(), 0, packet.getLength());
-                handlePacket(packet.getAddress().toString(), packet.getPort(),message);
+//                String message = new String(packet.getData(), 0, packet.getLength());
+//                handlePacket(packet.getAddress().toString(), packet.getPort(), message);
+                Runnable clientHandler = new ClientHandler(packet, packet.getAddress(), packet.getPort(), socket, clientRooms);
+                new Thread(clientHandler).start();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,54 +44,92 @@ public class ServerUDP {
         }
     }
 
-    private void handlePacket(String clientAddress, int clientPort, String message) throws IOException {
-        // Парсинг сообщения от клиента (пример: "nickname:y_coordinate")
-        String[] parts = message.split(":");
+    public void stop() {
+        running = false;
+    }
 
-        String nickname = parts[0];
-        int yCoordinate = Integer.parseInt(parts[1]);
-        int roomNumber = Integer.parseInt(parts[2]);
+    private static class ClientHandler implements Runnable {
+        private DatagramPacket packet;
+        private InetAddress address;
+        private int port;
+        private DatagramSocket socket;
+        private HashMap<String, String> clientRooms;
 
-        if (parts[0].equals("@init")) {
-            String answer;
-            ArrayList<String> rooms = new ArrayList<>();
-            if (rooms.isEmpty()){
-                answer = "@init:" + "No rooms";
-            } else {
-                HashSet<String> uniqueValues = new HashSet<>(clientRooms.values());
-                for (String value : uniqueValues) {
-                    rooms.add(value);
-                }
-                answer = "@init:" + String.join(":", rooms);
+        public ClientHandler(DatagramPacket packet, InetAddress address, int port, DatagramSocket socket, HashMap<String, String> clientRooms) {
+            this.packet = packet;
+            this.address = address;
+            this.port = port;
+            this.socket = socket;
+            this.clientRooms = clientRooms;
+        }
+
+        @Override
+        public void run() {
+            String message = new String(packet.getData(), 0, packet.getLength());
+
+            try {
+                handlePacket(address.toString(), port, message);
+//                socket.send(response);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-            byte[] sendData = answer.getBytes();
+        private void handlePacket(String clientAddress, int clientPort, String message) throws IOException {
+            // Парсинг сообщения от клиента (пример: "nickname:y_coordinate")
+            String[] parts = message.split(":");
 
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(clientAddress), clientPort);
-            socket.send(sendPacket);
+            String nickname = parts[0];
+            int yCoordinate = Integer.parseInt(parts[1]);
+            int roomNumber = Integer.parseInt(parts[2]);
 
-        } else {
+            if (parts[0].equals("@init")) {
+                String answer;
+                ArrayList<String> rooms = new ArrayList<>();
+                if (rooms.isEmpty()){
+                    answer = "@init:" + "No rooms";
+                } else {
+                    HashSet<String> uniqueValues = new HashSet<>(clientRooms.values());
+                    for (String value : uniqueValues) {
+                        rooms.add(value);
+                    }
+                    answer = "@init:" + String.join(":", rooms);
+                }
 
-            // Обработка сообщения и обновление информации о клиенте в комнатах
-            updateClientInformation(clientAddress, nickname, yCoordinate);
+                byte[] sendData = answer.getBytes();
 
-            // Отправка обновленной информации обратно клиенту
-            sendResponseToClient(clientAddress, clientPort);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(clientAddress), clientPort);
+                socket.send(sendPacket);
+
+            } else {
+
+                // Обработка сообщения и обновление информации о клиенте в комнатах
+                updateClientInformation(clientAddress, nickname, yCoordinate);
+
+                // Отправка обновленной информации обратно клиенту
+                sendResponseToClient(clientAddress, clientPort, roomNumber);
+            }
+        }
+
+        private void updateClientInformation(String clientAddress, String nickname, int yCoordinate) {
+            // Обновление информации о клиенте в комнатах
+            clientRooms.put(clientAddress, "Room1");  // Пример: всегда помещаем клиентов в комнату "Room1"
+            // Дополнительная логика по обработке координат и других данных
+
+        }
+
+        private void sendResponseToClient(String clientAddress, int clientPort, int roomNumber) {
+            // Отправка ответа клиенту
+            for (Map.Entry<String, String> entry : clientRooms.entrySet()) {
+                if (entry.getValue().equals(String.valueOf(roomNumber))) {
+//                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+
+                }
+            }
         }
     }
 
-    private void updateClientInformation(String clientAddress, String nickname, int yCoordinate) {
-        // Обновление информации о клиенте в комнатах
-        clientRooms.put(clientAddress, "Room1");  // Пример: всегда помещаем клиентов в комнату "Room1"
-        // Дополнительная логика по обработке координат и других данных
 
-
-    }
-
-    private void sendResponseToClient(String clientAddress, int clientPort) {
-        // Отправка ответа клиенту (если необходимо)
-        // В данном примере, сервер не отправляет ответ клиенту, но вы можете добавить логику ответа
-    }
 
     public static void main(String[] args) {
         ServerUDP server = new ServerUDP();
