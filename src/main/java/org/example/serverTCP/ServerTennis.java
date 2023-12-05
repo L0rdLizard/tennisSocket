@@ -1,11 +1,8 @@
-package org.example.server;
-
-import org.example.client.model.GameModel;
+package org.example.serverTCP;
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.List;
 
 //public class ServerTennis {
 //    public static void main(String[] args) throws IOException {
@@ -172,7 +169,7 @@ public class ServerTennis {
 //                for (InetAddress client : clients) {
 //                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, client, clientPort);
 //                    socket.send(sendPacket);
-                }
+//                }
             }
         }
 

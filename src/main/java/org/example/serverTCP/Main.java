@@ -1,4 +1,4 @@
-package org.example.server;
+package org.example.serverTCP;
 
 public class Main {
     public static void main(String[] args) {

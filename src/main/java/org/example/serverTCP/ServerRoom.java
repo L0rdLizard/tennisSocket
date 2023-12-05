@@ -1,4 +1,4 @@
-package org.example.server;
+package org.example.serverTCP;
 
 public class ServerRoom {
     int number;
