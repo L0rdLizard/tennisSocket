@@ -1,6 +1,7 @@
 package org.example.client.contoller;
 
 import org.example.client.model.RacketModel;
+import org.example.client.model.TennisCourtModel;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,10 +12,10 @@ public class ClientUDP {
 //    private static final int SERVER_PORT = 9876;
     private static String nickname;
     private static int roomNumber;
-    private static RacketModel racket;
+    private static TennisCourtModel tennisCourtModel;
 
-    public ClientUDP(RacketModel racket){
-        this.racket = racket;
+    public ClientUDP(TennisCourtModel tennisCourtModel){
+        ClientUDP.tennisCourtModel = tennisCourtModel;
     }
 
     public static void main(String[] args) {
@@ -51,7 +52,7 @@ public class ClientUDP {
             while (true) {
 //                System.out.print("Enter your Y-coordinate: ");
 //                int yCoordinate = scanner.nextInt();
-                int yCoordinate = racket.getY();
+                int yCoordinate = tennisCourtModel.getRacketLeft().getY();
 
                 // Construct the message to be sent to the server
                 String message = nickname + ":" + yCoordinate + ":" + roomNumber;
@@ -61,7 +62,7 @@ public class ClientUDP {
 
                 // Receive and print the server's response
                 String serverResponse = receivePacket(socket);
-                System.out.println("Server response: " + serverResponse);
+//                System.out.println("Server response: " + serverResponse);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +79,13 @@ public class ClientUDP {
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
+
+        String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
+        String[] parts = message.split(":");
+
+        if (!parts[0].equals(nickname)) {
+            tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
+        }
         return new String(receivePacket.getData(), 0, receivePacket.getLength());
     }
 }

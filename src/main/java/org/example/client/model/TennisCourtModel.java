@@ -24,8 +24,10 @@ public class TennisCourtModel {
         racketRight = new RacketModel(734, 150);
     }
 
-    public void setRacketPos(int y) {
+    public void setRacketPosLeft(int y) {
         this.racketLeft.setRacketPos(y);
+    }
+    public void setRacketPosRight(int y) {
         this.racketRight.setRacketPos(y);
     }
 

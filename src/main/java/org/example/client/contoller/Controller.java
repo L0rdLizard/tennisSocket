@@ -18,7 +18,7 @@ public class Controller{
         gamePanelView.addKeyListener(keyboardInputs);
         gamePanelView.addMouseMotionListener(mouseInputs);
 
-        this.clientUDP = new ClientUDP(gamePanelView.getGameView().getGameModel().getTennisCourt().getRacketRight());
+        this.clientUDP = new ClientUDP(gamePanelView.getGameView().getGameModel().getTennisCourt());
     }
 
 
