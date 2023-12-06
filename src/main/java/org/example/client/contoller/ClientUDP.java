@@ -1,7 +1,9 @@
 package org.example.client.contoller;
 
+import org.example.client.model.GameModel;
 import org.example.client.model.RacketModel;
 import org.example.client.model.TennisCourtModel;
+import org.example.client.view.GameView;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,9 +16,9 @@ public class ClientUDP {
     private static int roomNumber;
     private static TennisCourtModel tennisCourtModel;
 
-    public ClientUDP(TennisCourtModel tennisCourtModel){
-        ClientUDP.tennisCourtModel = tennisCourtModel;
-    }
+//    public ClientUDP(TennisCourtModel tennisCourtModel){
+//        ClientUDP.tennisCourtModel = tennisCourtModel;
+//    }
 
     public static void main(String[] args) {
         try {
@@ -48,6 +50,11 @@ public class ClientUDP {
             System.out.print("Enter room number: ");
             roomNumber = Integer.parseInt(scanner.nextLine());
 
+            GameModel gameModel = new GameModel();
+            GameView gameView = new GameView(gameModel);
+            Controller controller = new Controller(gameView.getGamePanelView());
+
+            tennisCourtModel = gameModel.getTennisCourt();
             // Start a loop to send and receive game updates
             while (true) {
 //                System.out.print("Enter your Y-coordinate: ");
