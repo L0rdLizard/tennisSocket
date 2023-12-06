@@ -7,6 +7,7 @@ public class Controller{
     private MouseInputs mouseInputs;
     private KeyboardInputs keyboardInputs;
     GamePanelView gamePanelView;
+    private ClientUDP clientUDP;
 
     public Controller(GamePanelView gamePanelView) {
         this.gamePanelView = gamePanelView;
@@ -16,7 +17,10 @@ public class Controller{
         gamePanelView.addMouseListener(mouseInputs);
         gamePanelView.addKeyListener(keyboardInputs);
         gamePanelView.addMouseMotionListener(mouseInputs);
+
+        this.clientUDP = new ClientUDP(gamePanelView.getGameView().getGameModel().getTennisCourt().getRacketRight());
     }
+
 
 
 }

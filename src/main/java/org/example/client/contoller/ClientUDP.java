@@ -1,42 +1,63 @@
 package org.example.client.contoller;
 
+import org.example.client.model.RacketModel;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Scanner;
 
 public class ClientUDP {
-    private static final int SERVER_PORT = 9876;
+//    private static final int SERVER_PORT = 9876;
+    private static String nickname;
+    private static int roomNumber;
+    private static RacketModel racket;
+
+    public ClientUDP(RacketModel racket){
+        this.racket = racket;
+    }
 
     public static void main(String[] args) {
         try {
+            if (args.length != 2) {
+                System.out.println("Usage: java Client <server_address> <server_port>");
+                return;
+            }
+
+            String serverAddress = args[0];
+            int serverPort = Integer.parseInt(args[1]);
             DatagramSocket socket = new DatagramSocket();
-            InetAddress serverAddress = InetAddress.getByName("localhost");
+
+//            DatagramSocket socket = new DatagramSocket();
+//            InetAddress serverAddress = InetAddress.getByName("localhost");
 
             // Initialize the client with a unique nickname
             System.out.print("Enter your nickname: ");
             Scanner scanner = new Scanner(System.in);
-            String nickname = scanner.nextLine();
-            int roomNumber = 1;  // You can change this based on your game logic
+            nickname = scanner.nextLine();
 
             // Send an initialization message to the server
             String initMessage = "@init";
-            sendPacket(socket, initMessage, serverAddress);
+            sendPacket(socket, initMessage, InetAddress.getByName(serverAddress), serverPort);
 
             // Receive and print the server's response
             String initResponse = receivePacket(socket);
             System.out.println("Server response: " + initResponse);
 
+            System.out.print("Enter room number: ");
+            roomNumber = Integer.parseInt(scanner.nextLine());
+
             // Start a loop to send and receive game updates
             while (true) {
-                System.out.print("Enter your Y-coordinate: ");
-                int yCoordinate = scanner.nextInt();
+//                System.out.print("Enter your Y-coordinate: ");
+//                int yCoordinate = scanner.nextInt();
+                int yCoordinate = racket.getY();
 
                 // Construct the message to be sent to the server
                 String message = nickname + ":" + yCoordinate + ":" + roomNumber;
 
                 // Send the message to the server
-                sendPacket(socket, message, serverAddress);
+                sendPacket(socket, message, InetAddress.getByName(serverAddress), serverPort);
 
                 // Receive and print the server's response
                 String serverResponse = receivePacket(socket);
@@ -47,9 +68,9 @@ public class ClientUDP {
         }
     }
 
-    private static void sendPacket(DatagramSocket socket, String message, InetAddress serverAddress) throws Exception {
+    private static void sendPacket(DatagramSocket socket, String message, InetAddress serverAddress, int serverPort) throws Exception {
         byte[] sendData = message.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverAddress, SERVER_PORT);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverAddress, serverPort);
         socket.send(sendPacket);
     }
 
