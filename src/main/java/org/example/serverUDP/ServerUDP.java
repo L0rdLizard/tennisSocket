@@ -68,14 +68,14 @@ public class ServerUDP {
             String message = new String(packet.getData(), 0, packet.getLength());
 
             try {
-                handlePacket(address.toString(), port, message);
+                handlePacket(message);
 //                socket.send(response);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        private void handlePacket(String clientAddress, int clientPort, String message) throws IOException {
+        private void handlePacket(String message) throws IOException {
             // Парсинг сообщения от клиента (пример: "nickname:y_coordinate")
             String[] parts = message.split(":");
 
@@ -98,32 +98,33 @@ public class ServerUDP {
 
                 byte[] sendData = answer.getBytes();
 
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(clientAddress), clientPort);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                 socket.send(sendPacket);
 
             } else {
 
                 // Обработка сообщения и обновление информации о клиенте в комнатах
-                updateClientInformation(clientAddress, nickname, yCoordinate);
+                updateClientInformation(nickname, roomNumber);
 
                 // Отправка обновленной информации обратно клиенту
-                sendResponseToClient(clientAddress, clientPort, roomNumber);
+                sendResponseToClient(roomNumber, nickname, yCoordinate);
             }
         }
 
-        private void updateClientInformation(String clientAddress, String nickname, int yCoordinate) {
+        private void updateClientInformation(String nickname, int roomNumber) {
             // Обновление информации о клиенте в комнатах
-            clientRooms.put(clientAddress, "Room1");  // Пример: всегда помещаем клиентов в комнату "Room1"
-            // Дополнительная логика по обработке координат и других данных
-
+            clientRooms.put(nickname, String.valueOf(roomNumber));
         }
 
-        private void sendResponseToClient(String clientAddress, int clientPort, int roomNumber) {
+        private void sendResponseToClient(int roomNumber, String nickname, int yCoordinate) throws IOException{
             // Отправка ответа клиенту
+            String response = nickname + ":" + yCoordinate;
+            byte[] sendData = response.getBytes();
             for (Map.Entry<String, String> entry : clientRooms.entrySet()) {
                 if (entry.getValue().equals(String.valueOf(roomNumber))) {
 //                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+                    socket.send(sendPacket);
                 }
             }
         }
