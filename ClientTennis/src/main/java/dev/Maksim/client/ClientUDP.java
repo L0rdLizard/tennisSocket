@@ -1,9 +1,9 @@
-package org.example.client.contoller;
+package dev.Maksim.client;
 
-import org.example.client.model.GameModel;
-import org.example.client.model.RacketModel;
-import org.example.client.model.TennisCourtModel;
-import org.example.client.view.GameView;
+import dev.Maksim.client.contoller.Controller;
+import dev.Maksim.client.model.GameModel;
+import dev.Maksim.client.model.TennisCourtModel;
+import dev.Maksim.client.view.GameView;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -37,18 +37,26 @@ public class ClientUDP {
             // Initialize the client with a unique nickname
             System.out.print("Enter your nickname: ");
             Scanner scanner = new Scanner(System.in);
-            nickname = scanner.nextLine();
+            while(!scanner.hasNextLine()){
+                System.out.println("abbbbbbb");
+                nickname=scanner.nextLine();
+            }
+//            nickname = scanner.nextLine();
 
             // Send an initialization message to the server
             String initMessage = "@init";
             sendPacket(socket, initMessage, InetAddress.getByName(serverAddress), serverPort);
 
             // Receive and print the server's response
-            String initResponse = receivePacket(socket);
-            System.out.println("Server response: " + initResponse);
+//            String initResponse = receivePacket(socket);
+            receivePacket(socket);
+//            System.out.println("Server response: " + initResponse);
 
             System.out.print("Enter room number: ");
-            roomNumber = Integer.parseInt(scanner.nextLine());
+//            roomNumber = Integer.parseInt(scanner.nextLine());
+            while(!scanner.hasNextLine()){
+                roomNumber= Integer.parseInt(scanner.nextLine());
+            }
 
             GameModel gameModel = new GameModel();
             GameView gameView = new GameView(gameModel);
@@ -68,7 +76,8 @@ public class ClientUDP {
                 sendPacket(socket, message, InetAddress.getByName(serverAddress), serverPort);
 
                 // Receive and print the server's response
-                String serverResponse = receivePacket(socket);
+//                String serverResponse = receivePacket(socket);
+                receivePacket(socket);
 //                System.out.println("Server response: " + serverResponse);
             }
         } catch (Exception e) {
@@ -82,7 +91,7 @@ public class ClientUDP {
         socket.send(sendPacket);
     }
 
-    private static String receivePacket(DatagramSocket socket) throws Exception {
+    private static void receivePacket(DatagramSocket socket) throws Exception {
         byte[] receiveData = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
@@ -90,9 +99,13 @@ public class ClientUDP {
         String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
         String[] parts = message.split(":");
 
+        if (parts[0].equals("@init")){
+            System.out.println("\n" + parts[1]);
+        }
+
         if (!parts[0].equals(nickname)) {
             tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
         }
-        return new String(receivePacket.getData(), 0, receivePacket.getLength());
+//        return new String(receivePacket.getData(), 0, receivePacket.getLength());
     }
 }

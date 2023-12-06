@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class ServerUDP {
-    private static final int PORT = 9876;
+    private static final int PORT = 8080;
     private DatagramSocket socket;
-    private boolean running;
+    private boolean running = true;
     private HashMap<String, String> clientRooms;  // Хранит информацию о том, в какой комнате находится каждый клиент
 
     public ServerUDP() {
@@ -78,10 +78,16 @@ public class ServerUDP {
         private void handlePacket(String message) throws IOException {
             // Парсинг сообщения от клиента (пример: "nickname:y_coordinate")
             String[] parts = message.split(":");
-
-            String nickname = parts[0];
-            int yCoordinate = Integer.parseInt(parts[1]);
-            int roomNumber = Integer.parseInt(parts[2]);
+            String nickname;
+            int yCoordinate = 0;
+            int roomNumber = 0;
+            if (parts.length == 1){
+                nickname = parts[0];
+            } else {
+                nickname = parts[0];
+                yCoordinate = Integer.parseInt(parts[1]);
+                roomNumber = Integer.parseInt(parts[2]);
+            }
 
             if (parts[0].equals("@init")) {
                 String answer;

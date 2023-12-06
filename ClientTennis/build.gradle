@@ -1,0 +1,49 @@
+//plugins {
+//    id("java")
+//    id ("application")
+//}
+//
+//application {
+//    mainClass = ("dev.Maksim.client.ClientUDP")
+//}
+//
+//group = "dev.Maksim"
+//version = "1.0-SNAPSHOT"
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//
+//dependencies {
+//    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+//    testImplementation("org.junit.jupiter:junit-jupiter")
+//}
+//
+//tasks.test {
+//    useJUnitPlatform()
+//}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'dev.Maksim.client.ClientUDP'
+
+
+repositories {
+    mavenCentral()
+}
+
+
+jar {
+    archiveBaseName = 'dev.Maksim'
+    archiveVersion =  '0.1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation "joda-time:joda-time:2.2"
+    testImplementation "junit:junit:4.12"
+}
