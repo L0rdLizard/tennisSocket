@@ -40,17 +40,6 @@ public class ClientUDP {
 //
 //            }
 
-//            try (Scanner scanner = new Scanner(System.in)) {
-//                if (scanner.hasNextLine()) {
-//                    System.out.println("\nnickname");
-//                    nickname = scanner.nextLine();
-//                } else {
-//                    System.out.println("Пожалуйста, введите данные заново.");
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-
 //            nickname = scanner.nextLine();
 
             String initMessage = "@init";
@@ -61,23 +50,14 @@ public class ClientUDP {
 
             System.out.print("Enter room number: ");
 
-            roomNumber = Integer.parseInt(scanner.nextLine());
+//            roomNumber = Integer.parseInt(scanner.nextLine());
 
-//            while(scanner.hasNextLine()){
-//                System.out.println("\nroomNumber");
-//                roomNumber = Integer.parseInt(scanner.nextLine());
-//            }
+            while(scanner.hasNextLine()){
+                System.out.println("\nroomNumber");
+                roomNumber = Integer.parseInt(scanner.nextLine());
+                break;
+            }
 
-//            try (Scanner scanner = new Scanner(System.in)) {
-//                if (scanner.hasNextLine()) {
-//                    System.out.println("roomNumber");
-//                    roomNumber = Integer.parseInt(scanner.nextLine());
-//                } else {
-//                    System.out.println("Пожалуйста, введите данные заново.");
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
 
             GameModel gameModel = new GameModel();
             GameView gameView = new GameView(gameModel);
@@ -86,18 +66,96 @@ public class ClientUDP {
             tennisCourtModel = gameModel.getTennisCourt();
             System.out.println("start");
 
-            while (true) {
-                int yCoordinate = tennisCourtModel.getRacketLeft().getY();
+            Runnable sendPacketThread = new SendPacketThread(socket, InetAddress.getByName(serverAddress), serverPort, nickname, String.valueOf(roomNumber), tennisCourtModel);
+            new Thread(sendPacketThread).start();
 
-                String message = nickname + ":" + yCoordinate + ":" + roomNumber;
-//                System.out.println(nickname + " " + yCoordinate + " " + roomNumber);
-
-                sendPacket(socket, message, InetAddress.getByName(serverAddress), serverPort);
-
-                receivePacket(socket);
-            }
+            Runnable receivePacketThread = new ReceivePacketThread(socket);
+            new Thread(receivePacketThread).start();
+//            while (true) {
+//                int yCoordinate = tennisCourtModel.getRacketLeft().getY();
+//
+//                String message = nickname + ":" + yCoordinate + ":" + roomNumber;
+////                System.out.println(nickname + " " + yCoordinate + " " + roomNumber);
+//
+//                sendPacket(socket, message, InetAddress.getByName(serverAddress), serverPort);
+//
+//                receivePacket(socket);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class SendPacketThread implements Runnable {
+        private DatagramSocket socket;
+        private InetAddress serverAddress;
+        private int serverPort;
+        private String nickname;
+        private String roomNumber;
+        private TennisCourtModel tennisCourtModel;
+
+        public SendPacketThread(DatagramSocket socket, InetAddress serverAddress, int serverPort, String nickname, String roomNumber, TennisCourtModel tennisCourtModel){
+            this.socket = socket;
+            this.serverAddress = serverAddress;
+            this.serverPort = serverPort;
+            this.nickname = nickname;
+            this.roomNumber = roomNumber;
+            this.tennisCourtModel = tennisCourtModel;
+        }
+        @Override
+        public void run() {
+            while (true){
+                try {
+                    sendPacket(socket, serverAddress, serverPort, nickname, roomNumber, tennisCourtModel);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        private void sendPacket(DatagramSocket socket, InetAddress serverAddress, int serverPort, String nickname, String roomNumber, TennisCourtModel tennisCourtModel) throws Exception{
+            int yCoordinate = tennisCourtModel.getRacketLeft().getY();
+            String message = nickname + ":" + yCoordinate + ":" + roomNumber;
+            byte[] sendData = message.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverAddress, serverPort);
+            socket.send(sendPacket);
+        }
+    }
+
+    private static class ReceivePacketThread implements Runnable {
+
+        DatagramSocket socket;
+
+        public ReceivePacketThread(DatagramSocket socket){
+            this.socket = socket;
+        }
+        @Override
+        public void run() {
+            while (true){
+                try {
+                    receivePacket(socket);
+//                    Thread.sleep(5);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        private static void receivePacket(DatagramSocket socket) throws Exception {
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(receivePacket);
+
+            String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
+            String[] parts = message.split(":");
+
+            if (parts[0].equals("@init")){
+                System.out.println("\n" + parts[1]);
+            } else if (!parts[0].equals(nickname)) {
+//            System.out.println(parts[0] + " " + nickname);
+                tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
+            }
+//        return new String(receivePacket.getData(), 0, receivePacket.getLength());
         }
     }
 

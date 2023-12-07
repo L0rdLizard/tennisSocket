@@ -14,11 +14,13 @@ public class ServerUDP {
     private DatagramSocket socket;
     private boolean running = true;
     private HashMap<String, String> clientRooms;  // Хранит информацию о том, в какой комнате находится каждый клиент
+    private HashMap<String, String> clientYCoordinates;
 
     public ServerUDP() {
         try {
             socket = new DatagramSocket(PORT);
             clientRooms = new HashMap<>();
+            clientYCoordinates = new HashMap<>();
             System.out.println("Server is running on port " + PORT);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,7 +36,7 @@ public class ServerUDP {
 
 //                String message = new String(packet.getData(), 0, packet.getLength());
 //                handlePacket(packet.getAddress().toString(), packet.getPort(), message);
-                Runnable clientHandler = new ClientHandler(packet, packet.getAddress(), packet.getPort(), socket, clientRooms);
+                Runnable clientHandler = new ClientHandler(packet, packet.getAddress(), packet.getPort(), socket, clientRooms, clientYCoordinates);
                 new Thread(clientHandler).start();
             }
         } catch (Exception e) {
@@ -54,13 +56,15 @@ public class ServerUDP {
         private int port;
         private DatagramSocket socket;
         private HashMap<String, String> clientRooms;
+        private HashMap<String, String> clientYCoordinates;
 
-        public ClientHandler(DatagramPacket packet, InetAddress address, int port, DatagramSocket socket, HashMap<String, String> clientRooms) {
+        public ClientHandler(DatagramPacket packet, InetAddress address, int port, DatagramSocket socket, HashMap<String, String> clientRooms, HashMap<String, String> clientYCoordinates) {
             this.packet = packet;
             this.address = address;
             this.port = port;
             this.socket = socket;
             this.clientRooms = clientRooms;
+            this.clientYCoordinates = clientYCoordinates;
         }
 
         @Override
@@ -110,34 +114,47 @@ public class ServerUDP {
             } else {
 
                 // Обработка сообщения и обновление информации о клиенте в комнатах
-                updateClientInformation(nickname, roomNumber);
+                updateClientInformation(nickname, roomNumber, yCoordinate);
 
                 // Отправка обновленной информации обратно клиенту
                 sendResponseToClient(roomNumber, nickname, yCoordinate);
             }
         }
 
-        private void updateClientInformation(String nickname, int roomNumber) {
+        private void updateClientInformation(String nickname, int roomNumber, int yCoordinate) {
             // Обновление информации о клиенте в комнатах
             clientRooms.put(nickname, String.valueOf(roomNumber));
+            clientYCoordinates.put(nickname, String.valueOf(yCoordinate));
         }
 
         private void sendResponseToClient(int roomNumber, String nickname, int yCoordinate) throws IOException{
             // Отправка ответа клиенту
-            String response = nickname + ":" + yCoordinate;
-            byte[] sendData = response.getBytes();
+//            String response = nickname + ":" + yCoordinate;
+//            byte[] sendData = response.getBytes();
+//            System.out.println("bytes are ready");
             for (Map.Entry<String, String> entry : clientRooms.entrySet()) {
+//                System.out.println(entry);
                 if (entry.getValue().equals(String.valueOf(roomNumber))) {
+                    String enemyNickname = entry.getKey();
+                    String enemyYCoordinate = "";
+
+                    for (Map.Entry<String, String> enemyEntry : clientYCoordinates.entrySet()){
+                        if (enemyEntry.getKey().equals(enemyNickname)){
+                            enemyYCoordinate = String.valueOf(enemyEntry.getValue());
+                        }
+                    }
+//                    String enemyYCoordinate = String.valueOf(yCoordinate);
+
+                    String response = enemyNickname + ":" + enemyYCoordinate;
+                    byte[] sendData = response.getBytes();
 //                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    System.out.println(nickname);
+//                    System.out.println(nickname);
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                     socket.send(sendPacket);
                 }
             }
         }
     }
-
-
 
     public static void main(String[] args) {
         ServerUDP server = new ServerUDP();
