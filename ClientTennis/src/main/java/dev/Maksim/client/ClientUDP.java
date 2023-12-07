@@ -107,6 +107,7 @@ public class ClientUDP {
             while (true){
                 try {
                     sendPacket(socket, serverAddress, serverPort, nickname, roomNumber, tennisCourtModel);
+                    Thread.sleep(5);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

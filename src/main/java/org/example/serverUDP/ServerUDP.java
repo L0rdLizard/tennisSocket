@@ -112,26 +112,27 @@ public class ServerUDP {
                 socket.send(sendPacket);
 
             } else {
-
-                // Обработка сообщения и обновление информации о клиенте в комнатах
                 updateClientInformation(nickname, roomNumber, yCoordinate);
 
-                // Отправка обновленной информации обратно клиенту
                 sendResponseToClient(roomNumber, nickname, yCoordinate);
             }
         }
 
         private void updateClientInformation(String nickname, int roomNumber, int yCoordinate) {
-            // Обновление информации о клиенте в комнатах
             clientRooms.put(nickname, String.valueOf(roomNumber));
             clientYCoordinates.put(nickname, String.valueOf(yCoordinate));
         }
 
         private void sendResponseToClient(int roomNumber, String nickname, int yCoordinate) throws IOException{
-            // Отправка ответа клиенту
 //            String response = nickname + ":" + yCoordinate;
 //            byte[] sendData = response.getBytes();
 //            System.out.println("bytes are ready");
+
+//            String response = "enemyNickname" + ":" + yCoordinate;
+//            byte[] sendData = response.getBytes();
+//            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+//            socket.send(sendPacket);
+
             for (Map.Entry<String, String> entry : clientRooms.entrySet()) {
 //                System.out.println(entry);
                 if (entry.getValue().equals(String.valueOf(roomNumber))) {
