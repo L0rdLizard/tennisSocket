@@ -31,54 +31,70 @@ public class ClientUDP {
             int serverPort = Integer.parseInt(args[1]);
             DatagramSocket socket = new DatagramSocket();
 
-//            DatagramSocket socket = new DatagramSocket();
-//            InetAddress serverAddress = InetAddress.getByName("localhost");
-
-            // Initialize the client with a unique nickname
             System.out.print("Enter your nickname: ");
+
             Scanner scanner = new Scanner(System.in);
-            while(!scanner.hasNextLine()){
-                System.out.println("abbbbbbb");
-                nickname=scanner.nextLine();
-            }
+            nickname = scanner.nextLine();
+//            while(scanner.hasNextLine()){
+//                System.out.println("\nnickname");
+//
+//            }
+
+//            try (Scanner scanner = new Scanner(System.in)) {
+//                if (scanner.hasNextLine()) {
+//                    System.out.println("\nnickname");
+//                    nickname = scanner.nextLine();
+//                } else {
+//                    System.out.println("Пожалуйста, введите данные заново.");
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
 //            nickname = scanner.nextLine();
 
-            // Send an initialization message to the server
             String initMessage = "@init";
             sendPacket(socket, initMessage, InetAddress.getByName(serverAddress), serverPort);
 
-            // Receive and print the server's response
-//            String initResponse = receivePacket(socket);
             receivePacket(socket);
 //            System.out.println("Server response: " + initResponse);
 
             System.out.print("Enter room number: ");
-//            roomNumber = Integer.parseInt(scanner.nextLine());
-            while(!scanner.hasNextLine()){
-                roomNumber= Integer.parseInt(scanner.nextLine());
-            }
+
+            roomNumber = Integer.parseInt(scanner.nextLine());
+
+//            while(scanner.hasNextLine()){
+//                System.out.println("\nroomNumber");
+//                roomNumber = Integer.parseInt(scanner.nextLine());
+//            }
+
+//            try (Scanner scanner = new Scanner(System.in)) {
+//                if (scanner.hasNextLine()) {
+//                    System.out.println("roomNumber");
+//                    roomNumber = Integer.parseInt(scanner.nextLine());
+//                } else {
+//                    System.out.println("Пожалуйста, введите данные заново.");
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             GameModel gameModel = new GameModel();
             GameView gameView = new GameView(gameModel);
             Controller controller = new Controller(gameView.getGamePanelView());
 
             tennisCourtModel = gameModel.getTennisCourt();
-            // Start a loop to send and receive game updates
+            System.out.println("start");
+
             while (true) {
-//                System.out.print("Enter your Y-coordinate: ");
-//                int yCoordinate = scanner.nextInt();
                 int yCoordinate = tennisCourtModel.getRacketLeft().getY();
 
-                // Construct the message to be sent to the server
                 String message = nickname + ":" + yCoordinate + ":" + roomNumber;
+//                System.out.println(nickname + " " + yCoordinate + " " + roomNumber);
 
-                // Send the message to the server
                 sendPacket(socket, message, InetAddress.getByName(serverAddress), serverPort);
 
-                // Receive and print the server's response
-//                String serverResponse = receivePacket(socket);
                 receivePacket(socket);
-//                System.out.println("Server response: " + serverResponse);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,11 +117,14 @@ public class ClientUDP {
 
         if (parts[0].equals("@init")){
             System.out.println("\n" + parts[1]);
-        }
-
-        if (!parts[0].equals(nickname)) {
+        } else if (!parts[0].equals(nickname)) {
+//            System.out.println(parts[0] + " " + nickname);
             tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
         }
 //        return new String(receivePacket.getData(), 0, receivePacket.getLength());
     }
 }
+
+// cd C:\code\tennisSocket
+//  .\gradlew :ClientTennis:run --args="localhost 8080"
+// java -jar .\dev.Maksim-0.1.0.jar localhost 8080

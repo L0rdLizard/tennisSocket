@@ -129,6 +129,7 @@ public class ServerUDP {
             for (Map.Entry<String, String> entry : clientRooms.entrySet()) {
                 if (entry.getValue().equals(String.valueOf(roomNumber))) {
 //                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                    System.out.println(nickname);
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                     socket.send(sendPacket);
                 }

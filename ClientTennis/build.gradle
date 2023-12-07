@@ -36,6 +36,9 @@ repositories {
 
 
 jar {
+    manifest {
+        attributes 'Main-Class': 'dev.Maksim.client.ClientUDP'
+    }
     archiveBaseName = 'dev.Maksim'
     archiveVersion =  '0.1.0'
 }
