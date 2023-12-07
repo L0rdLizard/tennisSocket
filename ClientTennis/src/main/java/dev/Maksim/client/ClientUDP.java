@@ -53,7 +53,7 @@ public class ClientUDP {
 //            roomNumber = Integer.parseInt(scanner.nextLine());
 
             while(scanner.hasNextLine()){
-                System.out.println("\nroomNumber");
+//                System.out.println("\nroomNumber");
                 roomNumber = Integer.parseInt(scanner.nextLine());
                 break;
             }
@@ -64,7 +64,7 @@ public class ClientUDP {
             Controller controller = new Controller(gameView.getGamePanelView());
 
             tennisCourtModel = gameModel.getTennisCourt();
-            System.out.println("start");
+//            System.out.println("start");
 
             Runnable sendPacketThread = new SendPacketThread(socket, InetAddress.getByName(serverAddress), serverPort, nickname, String.valueOf(roomNumber), tennisCourtModel);
             new Thread(sendPacketThread).start();
