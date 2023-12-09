@@ -46,7 +46,6 @@ public class ClientUDP {
             sendPacket(socket, initMessage, InetAddress.getByName(serverAddress), serverPort);
 
             receivePacket(socket);
-//            System.out.println("Server response: " + initResponse);
 
             System.out.print("Enter room number: ");
 
@@ -135,7 +134,6 @@ public class ClientUDP {
             while (true){
                 try {
                     receivePacket(socket);
-//                    Thread.sleep(5);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -154,7 +152,7 @@ public class ClientUDP {
                 System.out.println("\n" + parts[1]);
             } else if (!parts[0].equals(nickname)) {
 //            System.out.println(parts[0] + " " + nickname);
-                tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
+                tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]) + 45);
             }
 //        return new String(receivePacket.getData(), 0, receivePacket.getLength());
         }
