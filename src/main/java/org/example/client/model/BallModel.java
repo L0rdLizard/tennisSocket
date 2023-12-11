@@ -109,4 +109,8 @@ public class BallModel {
         yDir = 1;
     }
 
+    public void setxDir(int d){
+        xDir = d;
+    }
+
 }

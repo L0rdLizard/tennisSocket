@@ -35,12 +35,6 @@ public class ClientUDP {
 
             Scanner scanner = new Scanner(System.in);
             nickname = scanner.nextLine();
-//            while(scanner.hasNextLine()){
-//                System.out.println("\nnickname");
-//
-//            }
-
-//            nickname = scanner.nextLine();
 
             String initMessage = "@init";
             sendPacket(socket, initMessage, InetAddress.getByName(serverAddress), serverPort);
@@ -49,10 +43,7 @@ public class ClientUDP {
 
             System.out.print("Enter room number: ");
 
-//            roomNumber = Integer.parseInt(scanner.nextLine());
-
             while(scanner.hasNextLine()){
-//                System.out.println("\nroomNumber");
                 roomNumber = Integer.parseInt(scanner.nextLine());
                 break;
             }
@@ -63,7 +54,6 @@ public class ClientUDP {
             Controller controller = new Controller(gameView.getGamePanelView());
 
             tennisCourtModel = gameModel.getTennisCourt();
-//            System.out.println("start");
 
             Runnable sendPacketThread = new SendPacketThread(socket, InetAddress.getByName(serverAddress), serverPort, nickname, String.valueOf(roomNumber), tennisCourtModel);
             new Thread(sendPacketThread).start();
@@ -172,6 +162,7 @@ public class ClientUDP {
         String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
         String[] parts = message.split(":");
 
+        System.out.println("Available rooms:\n");
         if (parts[0].equals("@init")){
             System.out.println("\n" + parts[1]);
         } else if (!parts[0].equals(nickname)) {

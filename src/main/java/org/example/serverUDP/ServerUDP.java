@@ -96,7 +96,7 @@ public class ServerUDP {
             if (parts[0].equals("@init")) {
                 String answer;
                 ArrayList<String> rooms = new ArrayList<>();
-                if (rooms.isEmpty()){
+                if (clientRooms.isEmpty()){
                     answer = "@init:" + "No rooms";
                 } else {
                     HashSet<String> uniqueValues = new HashSet<>(clientRooms.values());
