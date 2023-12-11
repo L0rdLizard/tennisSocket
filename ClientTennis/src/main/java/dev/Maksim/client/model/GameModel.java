@@ -107,6 +107,12 @@ public class GameModel implements Runnable{
         System.out.println(playing);
     }
 
+    public void changePlayingWithPause(boolean playing) throws InterruptedException {
+        Thread.sleep(3000);
+        this.playing = playing;
+        System.out.println(playing);
+    }
+
     public void changePlayingReverse(){
         if (playing){
             playing = false;

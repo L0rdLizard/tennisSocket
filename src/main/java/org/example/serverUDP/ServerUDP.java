@@ -111,6 +111,25 @@ public class ServerUDP {
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                 socket.send(sendPacket);
 
+            } else if (parts[0].equals("@init2")) {
+                int temp = 0;
+                for (Map.Entry<String, String> room : clientRooms.entrySet()){
+                    if (room.getValue().equals(String.valueOf(roomNumber))){
+                        temp++;
+                    }
+                }
+                if (temp >= 2) {
+                    kickUser();
+                } else {
+                    String type = "1";
+                    if (temp == 0)
+                        type = "0";
+                    String response = "@init2"+ ":" + type;
+                    byte[] sendData = response.getBytes();
+
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+                    socket.send(sendPacket);
+                }
             } else {
                 updateClientInformation(nickname, roomNumber, yCoordinate);
 
@@ -118,9 +137,17 @@ public class ServerUDP {
             }
         }
 
-        private void updateClientInformation(String nickname, int roomNumber, int yCoordinate) {
+        private void updateClientInformation(String nickname, int roomNumber, int yCoordinate) throws IOException {
             clientRooms.put(nickname, String.valueOf(roomNumber));
             clientYCoordinates.put(nickname, String.valueOf(yCoordinate));
+        }
+
+        private void kickUser() throws IOException {
+            String response = "@kick";
+            byte[] sendData = response.getBytes();
+
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+            socket.send(sendPacket);
         }
 
         private void sendResponseToClient(int roomNumber, String nickname, int yCoordinate) throws IOException{

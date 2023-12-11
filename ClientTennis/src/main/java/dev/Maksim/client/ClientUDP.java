@@ -1,6 +1,7 @@
 package dev.Maksim.client;
 
 import dev.Maksim.client.contoller.Controller;
+import dev.Maksim.client.model.BallModel;
 import dev.Maksim.client.model.GameModel;
 import dev.Maksim.client.model.TennisCourtModel;
 import dev.Maksim.client.view.GameView;
@@ -15,6 +16,7 @@ public class ClientUDP {
     private static String nickname;
     private static int roomNumber;
     private static TennisCourtModel tennisCourtModel;
+    private static boolean gameStart = false;
 
 //    public ClientUDP(TennisCourtModel tennisCourtModel){
 //        ClientUDP.tennisCourtModel = tennisCourtModel;
@@ -48,6 +50,10 @@ public class ClientUDP {
                 break;
             }
 
+            String initMessage2 = "@init2" + ":" + "0" + ":" + roomNumber;
+            sendPacket(socket, initMessage2, InetAddress.getByName(serverAddress), serverPort);
+
+            receivePacket(socket);
 
             GameModel gameModel = new GameModel();
             GameView gameView = new GameView(gameModel);
@@ -144,7 +150,16 @@ public class ClientUDP {
                     System.out.println("\n" + part);
                 }
 //                System.out.println("\n" + parts[1]);
-            } else if (!parts[0].equals(nickname)) {
+            } else if (parts[0].equals("@kick")) {
+                System.out.println("This room is full");
+                System.exit(0);
+            }
+            else if (!parts[0].equals(nickname)) {
+                if (gameStart == false){
+                    tennisCourtModel.getGameModel().changePlayingWithPause(true);
+                    gameStart = true;
+                }
+
 //            System.out.println(parts[0] + " " + nickname);
                 tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]) + 45);
             }
@@ -166,13 +181,26 @@ public class ClientUDP {
         String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
         String[] parts = message.split(":");
 
-        System.out.println("Available rooms:");
+//        System.out.println(parts[0]);
+
         if (parts[0].equals("@init")){
+            System.out.println("Available rooms:");
             for (String part : parts){
                 if (part.equals("@init")) continue;
                 System.out.println(part + "\n");
             }
-        } else if (!parts[0].equals(nickname)) {
+        } else if (parts[0].equals("@kick")) {
+            System.out.println("This room is full");
+            System.exit(0);
+        } else if (parts[0].equals("@init2")){
+//            if (parts[1].equals("0")){
+//                for (BallModel ball : tennisCourtModel.getBalls()) {
+//                    ball.setx
+//                }
+//            }
+            return;
+        }
+        else if (!parts[0].equals(nickname)) {
 //            System.out.println(parts[0] + " " + nickname);
             tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
         }
