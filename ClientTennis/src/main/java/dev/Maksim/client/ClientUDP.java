@@ -139,7 +139,11 @@ public class ClientUDP {
             String[] parts = message.split(":");
 
             if (parts[0].equals("@init")){
-                System.out.println("\n" + parts[1]);
+                for (String part : parts){
+                    if (part.equals("@init")) continue;
+                    System.out.println("\n" + part);
+                }
+//                System.out.println("\n" + parts[1]);
             } else if (!parts[0].equals(nickname)) {
 //            System.out.println(parts[0] + " " + nickname);
                 tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]) + 45);
@@ -162,9 +166,12 @@ public class ClientUDP {
         String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
         String[] parts = message.split(":");
 
-        System.out.println("Available rooms:\n");
+        System.out.println("Available rooms:");
         if (parts[0].equals("@init")){
-            System.out.println("\n" + parts[1]);
+            for (String part : parts){
+                if (part.equals("@init")) continue;
+                System.out.println(part + "\n");
+            }
         } else if (!parts[0].equals(nickname)) {
 //            System.out.println(parts[0] + " " + nickname);
             tennisCourtModel.setRacketPosRight(Integer.parseInt(parts[1]));
