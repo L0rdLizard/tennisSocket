@@ -1,12 +1,11 @@
-import org.example.client.model.BallModel;
-import org.example.client.model.GameModel;
+import dev.Maksim.client.model.BallModel;
+import dev.Maksim.client.model.GameModel;
 import org.junit.jupiter.api.Test;
 
-
+//import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class TestGame {
+class TestClient {
     @Test
     public void RacketTest() {
         GameModel gameModel = new GameModel();
@@ -28,5 +27,4 @@ class TestGame {
 //        System.out.println(result);
         assertEquals(result, 1);
     }
-
 }

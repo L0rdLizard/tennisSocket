@@ -49,4 +49,10 @@ targetCompatibility = 1.8
 dependencies {
     implementation "joda-time:joda-time:2.2"
     testImplementation "junit:junit:4.12"
+    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
