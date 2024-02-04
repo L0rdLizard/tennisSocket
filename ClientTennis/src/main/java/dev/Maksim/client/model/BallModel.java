@@ -3,7 +3,7 @@ package dev.Maksim.client.model;
 import java.awt.*;
 import java.util.Random;
 
-import static dev.Maksim.client.test.Constants.*;
+import static dev.Maksim.client.Constants.*;
 
 public class BallModel {
     private TennisCourtModel tennisCourtModel;
@@ -21,6 +21,10 @@ public class BallModel {
         w = 30;
         h = w;
         color = newColor();
+    }
+
+    public void invertBall(){
+        xDir = xDir * -1;
     }
 
     public void updateBall() {

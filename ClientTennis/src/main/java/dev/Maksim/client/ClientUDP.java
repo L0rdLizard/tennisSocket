@@ -9,6 +9,7 @@ import dev.Maksim.client.view.GameView;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientUDP {
@@ -17,6 +18,8 @@ public class ClientUDP {
     private static int roomNumber;
     private static TennisCourtModel tennisCourtModel;
     private static boolean gameStart = false;
+    public static ArrayList<Integer> tempRooms = new ArrayList<>();
+    private static boolean invertion = false;
 
 //    public ClientUDP(TennisCourtModel tennisCourtModel){
 //        ClientUDP.tennisCourtModel = tennisCourtModel;
@@ -50,6 +53,15 @@ public class ClientUDP {
                 break;
             }
 
+            if (!tempRooms.isEmpty()) {
+                for (Integer room : tempRooms) {
+                    if (room == roomNumber) {
+                        invertion = true;
+                        break;
+                    }
+                }
+            }
+
             String initMessage2 = "@init2" + ":" + "0" + ":" + roomNumber;
             sendPacket(socket, initMessage2, InetAddress.getByName(serverAddress), serverPort);
 
@@ -60,6 +72,10 @@ public class ClientUDP {
             Controller controller = new Controller(gameView.getGamePanelView());
 
             tennisCourtModel = gameModel.getTennisCourt();
+
+            if (invertion){
+                tennisCourtModel.invertBalls();
+            }
 
             Runnable sendPacketThread = new SendPacketThread(socket, InetAddress.getByName(serverAddress), serverPort, nickname, String.valueOf(roomNumber), tennisCourtModel);
             new Thread(sendPacketThread).start();
@@ -188,6 +204,8 @@ public class ClientUDP {
             for (String part : parts){
                 if (part.equals("@init")) continue;
                 System.out.println(part + "\n");
+                if (part.equals("No rooms")) continue;
+                tempRooms.add(Integer.parseInt(part));
             }
         } else if (parts[0].equals("@kick")) {
             System.out.println("This room is full");

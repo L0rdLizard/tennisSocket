@@ -30,10 +30,10 @@ public class TennisCourtModel {
     }
 
     public void update(){
-        if (scoreLeft >= 3){
+        if (scoreLeft >= 5){
             gameOver(1);
         }
-        if (scoreRight >= 3){
+        if (scoreRight >= 5){
             gameOver(2);
         }
     }
@@ -52,6 +52,12 @@ public class TennisCourtModel {
 
     public void spawnBall(int x, int y) {
         balls.add(new BallModel(this, x, y));
+    }
+
+    public void invertBalls(){
+        for (BallModel ball : balls) {
+            ball.invertBall();
+        }
     }
 
     public ArrayList<BallModel> getBalls(){

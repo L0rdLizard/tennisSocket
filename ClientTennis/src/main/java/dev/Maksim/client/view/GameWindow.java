@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
-import static dev.Maksim.client.test.Constants.WindowHeight;
-import static dev.Maksim.client.test.Constants.WindowWidth;
+import static dev.Maksim.client.Constants.WindowHeight;
+import static dev.Maksim.client.Constants.WindowWidth;
 
 public class GameWindow {
     private JFrame jframe;
